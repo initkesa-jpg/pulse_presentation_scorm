@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ПУЛЬС · Презентация</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg-0:#07090F;--glass:rgba(255,255,255,.055);--line:rgba(255,255,255,.10);
+  --pulse:#FF4D6A;--volt:#3DFFC8;--ion:#7A5CFF;
+  --grad-pulse:linear-gradient(135deg,#FF4D6A,#FF8A5C);
+  --grad-volt:linear-gradient(135deg,#3DFFC8,#4DC9FF);
+  --grad-ion:linear-gradient(135deg,#7A5CFF,#C86AFF);
+  --ink:#F2F5FA;--dim:rgba(242,245,250,.62);--faint:rgba(242,245,250,.38);
+  --fn:'Unbounded',sans-serif;--ft:'Manrope',sans-serif;
+}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%}
+body{background:#000;color:var(--ink);font:400 16px/1.55 var(--ft);overflow:hidden}
+.deck{height:100%;position:relative}
+.slide{position:absolute;inset:0;display:none;flex-direction:column;justify-content:center;
+  padding:7vh 8vw;background:radial-gradient(120% 120% at 25% 10%,#0E1420 0%,#07090F 60%)}
+.slide.on{display:flex}
+.kicker{font:700 clamp(11px,1.2vw,14px) var(--fn);letter-spacing:.26em;text-transform:uppercase;color:var(--pulse);margin-bottom:2.4vh}
+.kicker.v{color:var(--volt)} .kicker.i{color:#B9A6FF}
+h1{font:900 clamp(38px,6.4vw,92px)/1.06 var(--fn)}
+h1 b,.gp{background:var(--grad-pulse);-webkit-background-clip:text;background-clip:text;color:transparent}
+.gv{background:var(--grad-volt);-webkit-background-clip:text;background-clip:text;color:transparent}
+.gi{background:var(--grad-ion);-webkit-background-clip:text;background-clip:text;color:transparent}
+h2{font:900 clamp(26px,4vw,54px)/1.12 var(--fn);max-width:22ch}
+.lead{margin-top:3vh;font:600 clamp(15px,1.6vw,21px)/1.6 var(--ft);color:var(--dim);max-width:56ch}
+.cols{display:flex;gap:2.4vw;margin-top:5vh;flex-wrap:wrap}
+.pcard{flex:1;min-width:220px;background:var(--glass);border:1px solid var(--line);border-radius:22px;padding:2.6vh 1.8vw}
+.pcard .big{font:900 clamp(30px,4.4vw,62px)/1 var(--fn)}
+.pcard .cap{margin-top:1.2vh;color:var(--dim);font:600 clamp(12px,1.15vw,15px) var(--ft)}
+.pcard h3{font:800 clamp(15px,1.5vw,19px) var(--ft);margin-bottom:.8vh}
+.pcard p{color:var(--dim);font:500 clamp(12.5px,1.15vw,15px)/1.55 var(--ft)}
+.foot{position:absolute;bottom:3.4vh;left:8vw;right:8vw;display:flex;justify-content:space-between;
+  font:600 12px var(--ft);color:var(--faint)}
+.pager{position:absolute;bottom:2.4vh;left:50%;transform:translateX(-50%);display:flex;gap:2px}
+/* точка = кнопка: полоска рисуется в content-box, паддинг = удобная тап-зона */
+.pager i{width:36px;height:22px;padding:9px 5px;border-radius:99px;cursor:pointer;
+  background:rgba(255,255,255,.14);background-clip:content-box}
+.pager i.on{background:var(--grad-pulse);background-clip:content-box}
+@media (max-width:760px){
+  .foot{display:none}
+  .pager{position:fixed;bottom:calc(86px + env(safe-area-inset-bottom));width:100%;justify-content:center}
+  .pager i{width:30px;height:26px;padding:11px 4px}
+}
+.formula{margin-top:4vh;font:600 clamp(16px,2vw,26px)/1.7 var(--ft);max-width:60ch}
+.formula b{font-family:var(--fn);font-weight:900}
+.formula .s1{color:var(--volt)} .formula .s2{color:var(--pulse)} .formula .s3{color:#B9A6FF}
+.chatrow{display:flex;gap:2vw;margin-top:4.5vh;flex-wrap:wrap;align-items:stretch}
+.aim{background:rgba(122,92,255,.13);border:1px solid rgba(122,92,255,.4);border-radius:18px 18px 18px 6px;
+  padding:2vh 1.6vw;font:600 clamp(13px,1.3vw,17px)/1.5 var(--ft);flex:1;min-width:240px}
+.aim .who{font:800 clamp(10px,1vw,12px) var(--fn);letter-spacing:.2em;color:#B9A6FF;margin-bottom:.8vh}
+.arrow{align-self:center;font:900 30px var(--fn);color:var(--faint)}
+.cta{display:inline-flex;margin-top:5vh;background:var(--grad-pulse);color:#14060A;border-radius:999px;
+  padding:2vh 3vw;font:800 clamp(15px,1.6vw,20px) var(--ft);box-shadow:0 0 44px rgba(255,77,106,.4)}
+.watchmini{position:absolute;right:7vw;top:50%;transform:translateY(-50%);width:min(26vw,300px);aspect-ratio:1;
+  border-radius:50%;background:#05070B;box-shadow:0 0 0 8px #12161F,0 0 0 10px #2A3140,0 24px 70px rgba(0,0,0,.7);
+  display:flex;flex-direction:column;align-items:center;justify-content:center}
+.watchmini .t{font:900 clamp(34px,4.6vw,58px)/1 var(--fn)}
+.watchmini .d{font:600 clamp(9px,1vw,12px) var(--ft);color:var(--dim);letter-spacing:.16em;margin-top:.8vh}
+.watchmini .m{font:700 clamp(11px,1.2vw,15px) var(--fn);color:var(--pulse);margin-top:1.4vh}
+@media (max-width:900px){.watchmini{display:none}}
+/* титул: композит корпус+наш экран — КРУПНО, продукт выходит за край кадра */
+.wcomp-t{position:absolute;right:-9vw;top:52%;transform:translateY(-50%);width:min(56vw,760px);aspect-ratio:1}
+.wcomp-t>img{position:absolute;inset:0;width:100%;z-index:2;filter:drop-shadow(0 40px 100px rgba(0,0,0,.75))}
+.wface-t{position:absolute;left:49.56%;top:45.21%;width:46.6%;aspect-ratio:1;transform:translate(-50%,-50%);
+  border-radius:50%;background:radial-gradient(120% 120% at 30% 20%,#0E1420 0%,#07090F 62%);z-index:1;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.wface-t .tt{font:900 clamp(28px,4.4vw,58px)/1 var(--fn)}
+.wface-t .td{font:600 clamp(9px,1.1vw,15px) var(--ft);color:var(--dim);letter-spacing:.16em;margin-top:.8vh}
+.wface-t .tm{font:700 clamp(10px,1.3vw,17px) var(--fn);color:var(--pulse);margin-top:1.2vh}
+@media (max-width:900px){.wcomp-t{display:none}}
+/* видение: абстракция + мини-экраны приложения */
+.vwrap{position:absolute;right:0;top:0;bottom:0;width:52vw;pointer-events:none}
+.vwrap>.vbg{position:absolute;inset:0;object-fit:cover;width:100%;height:100%;
+  -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 34%);mask-image:linear-gradient(90deg,transparent 0,#000 34%);opacity:.85}
+.vph{position:absolute;width:min(15vw,205px);border-radius:22px;background:#05070B;padding:7px;
+  border:1px solid #232A38;box-shadow:0 30px 70px rgba(0,0,0,.65)}
+.vph .scr{border-radius:16px;background:radial-gradient(140% 90% at 20% 0%,#0F1522 0%,#07090F 55%);
+  padding:12px 10px;display:flex;flex-direction:column;gap:8px;min-height:250px}
+.vph .h{font:900 12.5px var(--fn)}
+.vph .card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:11px;padding:8px}
+.vph .n{font:900 17px/1 var(--fn)} .vph .k{font:600 7px var(--ft);color:var(--faint);letter-spacing:.1em;text-transform:uppercase;margin-top:2px}
+.vph .ai{background:rgba(122,92,255,.15);border:1px solid rgba(122,92,255,.45);border-radius:10px;
+  padding:7px 9px;font:600 8.5px/1.4 var(--ft)}
+.vph .ai b{display:block;font:800 6px var(--fn);letter-spacing:.16em;color:#B9A6FF;margin-bottom:2px}
+.vph.v1{right:16vw;top:50%;transform:translateY(-58%) rotate(-4deg);z-index:2}
+.vph.v2{right:4vw;top:50%;transform:translateY(-38%) rotate(5deg);z-index:3}
+@media (max-width:1000px){.vwrap{display:none}}
+/* карточки с 3D-иконками */
+.cicon{height:clamp(84px,10vw,132px);display:block;margin:-8px 0 6px;filter:drop-shadow(0 14px 26px rgba(0,0,0,.5))}
+/* полноширинный фотослайд */
+.slide.bleed{padding:0;justify-content:flex-end}
+.slide.bleed .btxt{padding:0 8vw 9vh;position:relative;z-index:2;max-width:62ch}
+.photos3{align-items:stretch}
+.phc{flex:1;min-width:220px;margin:0;border-radius:20px;overflow:hidden;position:relative;border:1px solid var(--line)}
+.phc img{width:100%;height:min(38vh,340px);object-fit:cover;display:block}
+.phc figcaption{position:absolute;left:0;right:0;bottom:0;padding:34px 16px 14px;
+  background:linear-gradient(transparent,rgba(7,9,15,.94));font:600 clamp(12px,1.2vw,15px) var(--ft);color:var(--ink)}
+.ribbon{position:absolute;right:4vw;bottom:6vh;width:min(34vw,480px);pointer-events:none;
+  filter:drop-shadow(0 20px 50px rgba(122,92,255,.25))}
+@media (max-width:900px){.ribbon{display:none}}
+.sp{width:1em;height:1em;display:inline-block;vertical-align:-.12em;fill:currentColor}
+.playbtn{position:absolute;right:7vw;bottom:6.5vh;z-index:10;display:flex;align-items:center;gap:9px;
+  background:var(--grad-pulse);color:#14060A;border:0;border-radius:999px;padding:11px 22px;
+  font:800 14px var(--ft);cursor:pointer;box-shadow:0 0 30px rgba(255,77,106,.4)}
+.playbtn.playing{background:rgba(255,255,255,.1);color:var(--ink);box-shadow:none;border:1px solid var(--line)}
+@media (max-width:760px){
+  .playbtn{position:fixed;left:50%;right:auto;transform:translateX(-50%);
+    bottom:calc(18px + env(safe-area-inset-bottom));padding:13px 34px;font-size:15px;white-space:nowrap}
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" aria-hidden="true"><defs><symbol id="sp4" viewBox="0 0 24 24"><path d="M12 2l2.1 7.9L22 12l-7.9 2.1L12 22l-2.1-7.9L2 12l7.9-2.1z"/></symbol></defs></svg>
+<div class="deck" id="deck">
+
+  <!-- 1. Титул -->
+  <section class="slide on" style="background:linear-gradient(100deg,rgba(7,9,15,.88) 0%,rgba(7,9,15,.45) 45%,rgba(7,9,15,.18) 100%),url(img/keyvisual_pulse_v2.jpg) center/cover">
+    <div class="kicker">Концепция · умные часы с ИИ-агентом</div>
+    <h1><b>ПУЛЬС</b></h1>
+    <p class="lead">Часы, которые не показывают данные, а <b style="color:var(--ink)">действуют</b>:
+    проактивный агент на запястье превращает сон, пульс и календарь в следующий шаг.</p>
+    <div class="wcomp-t">
+      <div class="wface-t">
+        <svg style="position:absolute;inset:1%" viewBox="0 0 316 316">
+          <circle cx="158" cy="158" r="148" stroke="rgba(255,255,255,.07)" stroke-width="9" fill="none"/>
+          <circle cx="158" cy="158" r="148" stroke="#3DFFC8" stroke-width="9" fill="none" stroke-linecap="round" stroke-dasharray="930" stroke-dashoffset="215" transform="rotate(-90 158 158)"/>
+          <circle cx="158" cy="158" r="132" stroke="rgba(255,255,255,.07)" stroke-width="9" fill="none"/>
+          <circle cx="158" cy="158" r="132" stroke="#FF4D6A" stroke-width="9" fill="none" stroke-linecap="round" stroke-dasharray="829" stroke-dashoffset="410" transform="rotate(-90 158 158)"/>
+        </svg>
+        <div class="tt">07:42</div><div class="td">ЧТ · 9 ИЮЛЯ</div><div class="tm">● 62 BPM</div>
+      </div>
+      <img src="img/watch_cutout.png" alt="">
+    </div>
+  </section>
+
+  <!-- 2. Проблема -->
+  <section class="slide">
+    <div class="kicker">Проблема</div>
+    <h2>Цифры есть — <span class="gp">что делать, непонятно</span></h2>
+    <div class="cols">
+      <div class="pcard"><div class="big gp">73%</div><div class="cap">владельцев носимых устройств не меняют поведение по данным трекинга</div></div>
+      <div class="pcard"><div class="big gp">4 из 10</div><div class="cap">перестают открывать приложение уже через месяц</div></div>
+      <div class="pcard"><div class="big gp">0</div><div class="cap">действий предлагает обычный трекер — он молчит, пока не спросишь</div></div>
+    </div>
+  </section>
+
+  <!-- 2b. Аудитория -->
+  <section class="slide">
+    <div class="kicker">Аудитория</div>
+    <h2>25–45. Спорт, сон и <span class="gp">любовь к цифрам</span></h2>
+    <div class="cols photos3">
+      <figure class="phc"><img src="img/persona_running.jpg" alt=""><figcaption>тренируются по данным, а не по настроению</figcaption></figure>
+      <figure class="phc"><img src="img/persona_recovery.jpg" alt=""><figcaption>считают восстановление частью спорта</figcaption></figure>
+      <figure class="phc"><img src="img/food_bowl.jpg" alt=""><figcaption>фотографируют еду — хотят пользы, а не дневников</figcaption></figure>
+    </div>
+  </section>
+
+  <!-- 3. Видение -->
+  <section class="slide">
+    <div class="vwrap">
+      <img class="vbg" src="img/bg_abstract_tech.jpg" alt="">
+      <div class="vph v1"><div class="scr">
+        <div class="h">Сегодня</div>
+        <div class="card" style="display:flex;gap:8px;align-items:center">
+          <svg width="36" height="36" viewBox="0 0 36 36"><circle cx="18" cy="18" r="14" stroke="rgba(255,255,255,.1)" stroke-width="4" fill="none"/><circle cx="18" cy="18" r="14" stroke="#3DFFC8" stroke-width="4" fill="none" stroke-linecap="round" stroke-dasharray="88" stroke-dashoffset="17" transform="rotate(-90 18 18)"/><text x="18" y="22" text-anchor="middle" fill="#F2F5FA" style="font:900 10px Unbounded">81</text></svg>
+          <div><div style="font:800 9px var(--ft)">Восстановление</div><div class="k">готов к нагрузке</div></div>
+        </div>
+        <div style="display:flex;gap:8px"><div class="card" style="flex:1"><div class="n" style="color:var(--pulse)">62</div><div class="k">пульс</div></div>
+        <div class="card" style="flex:1"><div class="n" style="color:var(--volt)">8 214</div><div class="k">шаги</div></div></div>
+        <div class="ai"><b><svg class="sp"><use href="#sp4"/></svg> АГЕНТ</b>Окно 18:00 свободно — ставлю интервалы?</div>
+      </div></div>
+      <div class="vph v2"><div class="scr">
+        <div class="h">Агент</div>
+        <div class="ai"><b><svg class="sp"><use href="#sp4"/></svg> АГЕНТ · 07:15</b>Спал на 40 мин меньше нормы — сегодня лёгкий бег вместо силовой.</div>
+        <div class="card" style="border-radius:10px 10px 3px 10px;font:600 8.5px var(--ft)">А когда лучше по календарю?</div>
+        <div class="ai"><b><svg class="sp"><use href="#sp4"/></svg> АГЕНТ</b>Окно 18:00–19:00, погода 21°. Ставлю пробежку и напомню в 17:30 ✓</div>
+      </div></div>
+    </div>
+    <div class="kicker v" style="position:relative;z-index:2">Видение</div>
+    <h2 style="position:relative;z-index:2">Не трекер. <span class="gv">Агент.</span></h2>
+    <p class="formula" style="max-width:44ch;position:relative;z-index:2">Для <b class="s1">активных людей 25–45</b>, уставших от графиков без выводов,
+    <b class="s2">«Пульс»</b> — часы с проактивным ИИ-агентом — <b>сам предлагает действие в нужный момент</b>:
+    перенести тренировку, лечь раньше, выйти на пробежку в свободное окно.
+    В отличие от <b class="s3">Apple Watch, Galaxy Watch и Whoop</b>, наш агент не ждёт вопроса.</p>
+  </section>
+
+  <!-- 4. Как работает -->
+  <section class="slide">
+    <div class="kicker i">Продукт</div>
+    <h2>Контекст → <span class="gi">решение агента</span> → действие</h2>
+    <div class="chatrow">
+      <div class="aim"><div class="who">ДАННЫЕ</div>Сон 7:36 (−40 мин) · HRV 64 мс · встречи до 17:30 · погода 21°</div>
+      <div class="arrow">→</div>
+      <div class="aim"><div class="who"><svg class="sp"><use href="#sp4"/></svg> АГЕНТ РЕШАЕТ</div>Восстановление позволяет. Силовую — на завтра, сегодня бег в свободное окно 18:00.</div>
+      <div class="arrow">→</div>
+      <div class="aim" style="border-color:rgba(61,255,200,.5);background:rgba(61,255,200,.09)"><div class="who" style="color:var(--volt)">ДЕЙСТВИЕ</div>Тренировка в календаре · напоминание в 17:30 · разминка готова ✓</div>
+    </div>
+  </section>
+
+  <!-- 5. Экраны -->
+  <section class="slide">
+    <div class="kicker">Интерфейс</div>
+    <h2>Цифры-герои, <span class="gp">решения в один тап</span></h2>
+    <div class="cols">
+      <div class="pcard"><img class="cicon" src="img/icon_watch3d.png" alt=""><h3>Часы</h3><p>Циферблат с кольцами восстановления, live-пульс, проактивные карточки агента — ответ «да» одним касанием.</p></div>
+      <div class="pcard"><img class="cicon" src="img/icon_phone3d.png" alt=""><h3>Приложение</h3><p>Дашборд дня, диалог с агентом, детали сна с выводом, а не графиком. Всё на одной дизайн-системе.</p></div>
+      <div class="pcard"><img class="cicon" src="img/icon_spark3d.png" alt=""><h3>Тон интерфейса</h3><p>Тёмный космос, неон энергии, крупная цифровая типографика Unbounded — спорт и футуризм без «медицинской скуки».</p></div>
+    </div>
+  </section>
+
+  <!-- 5b. Полноширинное фото: вместе -->
+  <section class="slide bleed" style="background:linear-gradient(90deg,rgba(7,9,15,.15) 0%,rgba(7,9,15,.3) 55%,rgba(7,9,15,.86) 100%),url(img/friends_run.jpg) center/cover">
+    <div class="btxt" style="align-self:flex-end;text-align:right;margin-left:auto">
+      <div class="kicker v" style="text-align:right">Растём вместе</div>
+      <h2 style="max-width:16ch;margin-left:auto;text-align:right">Челленджи и <span class="gv">общие тренировки</span></h2>
+      <p class="lead" style="max-width:40ch;margin-left:auto;text-align:right">Агент выравнивает шансы по восстановлению каждого —
+      соревноваться честно могут люди разного уровня. Приглашение друга = месяц Pulse+ в подарок.</p>
+    </div>
+  </section>
+
+  <!-- 6. Монетизация -->
+  <section class="slide">
+    <div class="kicker v">Монетизация</div>
+    <h2>Агент — <span class="gv">двигатель подписки</span></h2>
+    <div class="cols">
+      <div class="pcard"><div class="big">399 ₽</div><div class="cap">Pulse+ в месяц: проактивный агент, голос, интеграции, планы восстановления</div></div>
+      <div class="pcard"><div class="big gv">LTV ×3</div><div class="cap">подписчик с активным агентом остаётся втрое дольше — гипотеза квартала</div></div>
+      <div class="pcard"><div class="big">14 дней</div><div class="cap">бесплатный триал: агент успевает доказать пользу до первого платежа</div></div>
+    </div>
+  </section>
+
+  <!-- 7. Гипотеза -->
+  <section class="slide">
+    <div class="kicker">Гипотеза квартала</div>
+    <h2>Проактивность <span class="gp">удерживает</span></h2>
+    <p class="formula">Если агент делает <b class="s2">≥3 полезных предложения в неделю</b>,
+    то Retention платной подписки на 3-й месяц вырастет с <b>62%</b> до <b class="s1">80%</b> —
+    без роста CAC. Проверяем пилотом на 500 подписчиках, 8 недель.</p>
+    <div class="cols">
+      <div class="pcard"><div class="big gv">80%</div><div class="cap">целевой Retention M3</div></div>
+      <div class="pcard"><div class="big">500</div><div class="cap">участников пилота</div></div>
+      <div class="pcard"><div class="big">8 нед</div><div class="cap">time-to-evidence</div></div>
+    </div>
+  </section>
+
+  <!-- 8. CTA -->
+  <section class="slide" style="align-items:center;text-align:center;background:linear-gradient(rgba(7,9,15,.62),rgba(7,9,15,.82)),url(img/keyvisual_pulse_v2.jpg) center/cover">
+    <div class="kicker">Следующий шаг</div>
+    <h1 style="max-width:16ch"><span class="gp">Дайте агенту</span> 8 недель</h1>
+    <p class="lead" style="max-width:44ch">Пилот на 500 подписчиков: бюджет 1,2 млн ₽, первое доказательство ценности — через 2 недели после старта.</p>
+    <span class="cta">Согласовать пилот →</span>
+  </section>
+
+  <div class="pager" id="pager"></div>
+  <div class="foot"><span>ПУЛЬС · концепция</span><span>дизайн-система «Пульс» · 2026</span></div>
+  <button class="playbtn" id="playbtn" title="Эксплейнер: голос + автолистание">
+    <svg id="pico" viewBox="0 0 24 24" width="18" height="18"><path d="M7 4.5v15l13-7.5z" fill="currentColor"/></svg>
+    <span id="ptxt">Эксплейнер</span>
+  </button>
+</div>
+
+<script>
+const slides=[...document.querySelectorAll('.slide')];
+const pager=document.getElementById('pager');
+slides.forEach((_,i)=>{
+  const d=document.createElement('i');
+  if(!i)d.className='on';
+  d.addEventListener('click',e=>{e.stopPropagation();stopExplainer();go(i)});
+  pager.appendChild(d);
+});
+let cur=0;
+function go(i){
+  cur=Math.max(0,Math.min(slides.length-1,i));
+  slides.forEach((s,j)=>s.classList.toggle('on',j===cur));
+  [...pager.children].forEach((d,j)=>d.classList.toggle('on',j===cur));
+}
+document.addEventListener('keydown',e=>{
+  if(['ArrowRight','PageDown',' '].includes(e.key))go(cur+1);
+  if(['ArrowLeft','PageUp'].includes(e.key))go(cur-1);
+  if(e.key==='Escape')stopExplainer();
+});
+document.getElementById('deck').addEventListener('click',e=>{
+  if(e.target.closest('.playbtn'))return;
+  stopExplainer();
+  if(e.clientX>innerWidth/2)go(cur+1);else go(cur-1);
+});
+
+/* ── Эксплейнер: голос (mp3, Microsoft Dmitry via edge-tts) + автолистание.
+      Фолбэк — Web Speech API (системный голос ОС). Всё бесплатно и локально. ── */
+const N_TRACKS = slides.length;
+let playing = false, audio = null;
+const btn = document.getElementById('playbtn'), ptxt = document.getElementById('ptxt'),
+      pico = document.getElementById('pico');
+function setBtn(on){
+  btn.classList.toggle('playing', on);
+  ptxt.textContent = on ? 'Стоп' : 'Эксплейнер';
+  pico.innerHTML = on ? '<rect x="6" y="5" width="4" height="14" fill="currentColor"/><rect x="14" y="5" width="4" height="14" fill="currentColor"/>'
+                      : '<path d="M7 4.5v15l13-7.5z" fill="currentColor"/>';
+}
+function speakFallback(i){
+  const texts = [...document.querySelectorAll('.slide')].map(s=>s.innerText.replace(/\s+/g,' ').slice(0,420));
+  const u = new SpeechSynthesisUtterance(texts[i]);
+  u.lang = 'ru-RU';
+  const v = speechSynthesis.getVoices().filter(v=>v.lang.startsWith('ru'));
+  if (v.length) u.voice = v.find(x=>/dmitry|male|yuri/i.test(x.name)) || v[0];
+  u.onend = ()=>{ if(playing) nextTrack(i+1); };
+  speechSynthesis.speak(u);
+}
+function playTrack(i){
+  if(i>=N_TRACKS){ stopExplainer(); return; }
+  go(i);
+  audio = new Audio(`audio/slide${i}.mp3`);
+  audio.onended = ()=>{ if(playing) setTimeout(()=>nextTrack(i+1), 450); };
+  audio.onerror = ()=>speakFallback(i);
+  audio.play().catch(()=>speakFallback(i));
+}
+function nextTrack(i){ playTrack(i); }
+function startExplainer(){ playing = true; setBtn(true); playTrack(cur); }
+function stopExplainer(){
+  if(!playing) return;
+  playing = false; setBtn(false);
+  if(audio){ audio.pause(); audio = null; }
+  if(window.speechSynthesis) speechSynthesis.cancel();
+}
+btn.addEventListener('click', ()=> playing ? stopExplainer() : startExplainer());
+</script>
+</body>
+</html>
